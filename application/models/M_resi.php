@@ -22,10 +22,11 @@ class M_resi extends CI_Model {
 			'nama_customer'			=> $data['nama_customer'],
 			'no_telp'				=> $data['no_telp'],
 			'no_resi'				=> $data['no_resi'],
-			'produk_variasi_id'			=> $data['produk_variasi_id'],
+			'produk_variasi_id'		=> $data['produk_variasi_id'],
 			'ekspedisi'				=> $data['ekspedisi'],
 			'harga'					=> $data['harga'],
-			'tanggal_pencatatan'	=> $data['tanggal_pencatatan'],
+			'tanggal_pencatatan'	=> $data['tanggal_pencatatan']." ".date('H:i:s'),
+			'whatsapp_label'	=> $data['whatsapp_label'],
 			'admin_id'				=> $this->userdata->admin_id,
 		);
 
@@ -39,10 +40,10 @@ class M_resi extends CI_Model {
 		$arr = array(
 			'nama_customer'			=> $data['nama_customer'],
 			'no_telp'				=> $data['no_telp'],
-			'produk_variasi_id'			=> $data['produk_variasi_id'],
+			'produk_variasi_id'		=> $data['produk_variasi_id'],
 			'ekspedisi'				=> $data['ekspedisi'],
 			'harga'					=> $data['harga'],
-			'tanggal_pencatatan'	=> $data['tanggal_pencatatan'],
+			'tanggal_pencatatan'	=> $data['tanggal_pencatatan']." ".date('H:i:s'),
 		);
 
 		$response = $this->db->update('tbl_resi', $arr, ['resi_id' => $data['resi_id']]);

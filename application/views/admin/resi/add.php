@@ -69,8 +69,8 @@
 </div><!-- /.container-fluid -->
 
 <script>
-    $('select[name="kode_barang"]').on('change', function () {
-        let barang = $('#kode_barang');
+    $('select[name="produk_variasi_id"]').on('change', function () {
+        let barang = $('#produk_variasi_id');
         $('#harga').val(barang.find(':selected').data('harga'));
     });
 </script>

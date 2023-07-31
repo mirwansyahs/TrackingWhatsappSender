@@ -49,6 +49,13 @@
                                 <td><?=$key->status?></td>
 
                                 <td class="text-center">
+                      
+                                    <a href="<?=base_url()?>admin/resi/detail/<?=$key->resi_id?>">
+                                        <button class="btn btn-info text-white btn-sm">
+                                            <i class="fa fa-list"></i>
+                                        </button>
+                                    </a>
+
                                     <a href="<?=base_url()?>admin/resi/edit/<?=$key->resi_id?>">
                                         <button class="btn btn-warning text-white btn-sm">
                                             <i class="far fa-edit"></i>

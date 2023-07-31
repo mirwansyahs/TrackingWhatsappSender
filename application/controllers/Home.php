@@ -9,6 +9,8 @@ class Home extends CI_Controller {
 		$this->load->model('M_provinsi');
 		$this->load->model('M_city');
 		$this->load->model('M_subdistrict');
+		$this->load->model('M_resi_activity');
+		$this->load->model('M_resi');
 	}
 	
     protected $raja_key = "a87a0e777f90d2db9a47f194006dc2ea";
@@ -24,6 +26,41 @@ class Home extends CI_Controller {
 
 		$this->load->view('home', $data);
 	}
+
+    public function webhook()
+    {
+        $key = json_decode(file_get_contents('php://input'));
+        // $data = $this->input->post();
+        // var_dump($data);
+
+        // foreach ($data as $key) {
+        //     var_dump($key);
+            $cekDB = $this->M_resi_activity->select(['tbl_resi.no_resi' => $key->no_resi, 'date' => $key->scantime]);
+
+            if ($cekDB->num_rows() == 0){
+                $getResi = $this->M_resi->select(['tbl_resi.no_resi' => $key->no_resi])->row();
+
+                $arr = array(
+                    'no_resi'       => $key->no_resi,
+                    'date'          => $key->scantime,
+                    'description'   => $key->description . " " . $key->reason,
+                    'location'      => $key->city,
+                    'sendWhatsapp'  => 0
+                );
+                $this->M_resi_activity->save($arr);
+
+                $getDataWhatsapp = $this->db->get_where('tbl_whatsapp', ['whatsapp_label' => $getResi->whatsapp_label])->row();
+                
+                $message = "Halo kak ".$getResi->nama_customer.", berikut informasi dari resi kaka :\r\n\r\nTanggal : ". $key->scantime . "\r\nStatus : Aktif\r\nKeterangan : " . $key->description . " " . $key->city. " " . $key->reason . "\r\nNo Resi : " . $getResi->no_resi."\r\n\r\n_Ini adalah pesan otomatis, tolong jangan balas pesan ini, jika ada pertanyaan langsung tanyakan ke admin yaa :))_";
+                    
+                $send = sendWa($getResi->no_telp, $message, $getDataWhatsapp->whatsapp_authorized);
+
+            }
+        // }
+
+        echo "true";
+
+    }
 
     public function getProvince(){
         $curl = curl_init();

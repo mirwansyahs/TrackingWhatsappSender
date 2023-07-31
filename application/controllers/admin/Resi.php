@@ -32,17 +32,46 @@ class Resi extends AUTH_Controller {
 		$this->backend->views('admin/resi/add', $data);
 	}
 
+	public function detail($id = null)
+    {
+        $data = [
+            'Resi' 		=> $this->M_resi->select(['resi_id' => $id])->row(),
+            'Resis' 	=> $this->db->select('tbl_resi.*, tbl_resi_activity.*, tbl_produk.kode_barang, tbl_produk.nama_barang,')
+									->from('tbl_resi')
+                                    ->join('tbl_resi_activity', 'tbl_resi_activity.no_resi = tbl_resi.no_resi')
+                                    ->join('tbl_produk_variasi', 'tbl_produk_variasi.produk_variasi_id = tbl_resi.produk_variasi_id')
+                                    ->join('tbl_produk', 'tbl_produk.kode_barang = tbl_produk_variasi.kode_barang')
+                                    ->where('tbl_resi.resi_id', $id)
+                                    // ->where('tbl_resi_activity.resi_id',$id)
+                                    ->order_by('date DESC')->get()->result(),
+            'title' 	=> "Data Resi",
+            'sub_title' => "Detail Resi",
+        ];
+		// var_dump($data['Resi']);
+        $this->backend->views('admin/resi/detail', $data);
+    }
+
+	public function randomWhatsapp(){
+		$result = $this->db->order_by('rand()')->get_where('tbl_whatsapp')->row();
+
+		// var_dump($result);
+
+		return ($result->whatsapp_label != null)?$result->whatsapp_label:$this->randomWhatsapp();
+	}
+
 	public function addProccess()
 	{
 		$data = $this->input->post();
+		$data['whatsapp_label']	= $this->randomWhatsapp();
 
 		$result = $this->M_resi->save($data);
 
 		if ($result){
+
 			$message = "Hallo Kak 👋\r\nberikut rincian pembelian di *Dewa Store* yaa\r\n";
             $message .= "\r\n*Nama : " . trim($data['nama_customer']) . "*";
             $message .= "\r\n*No resi : " . $data['no_resi'] . "*";
-            $message .= "\r\n*Barang : " . $this->M_produk->select(['tbl_produk.kode_barang' => $data['kode_barang']])->row()->nama_barang . "*";
+            $message .= "\r\n*Barang : " . $this->M_produk->select(['tbl_produk_variasi.produk_variasi_id' => $data['produk_variasi_id']])->row()->nama_barang . "*";
             $message .= "\r\n*Status Resi : Aktif*";
             $message .= "\r\n*Update Resi : -*";
             $message .= "\r\n\r\n*Dan untuk estimasi paket akan datang 2-3 hari pulau jawa dan 3-5 hari Untuk Luar pulau Jawa kak*, *Pengirimannya JNT EXPRES  ya kakak*";
@@ -55,7 +84,12 @@ class Resi extends AUTH_Controller {
             $message .= "\r\n\r\n*Terimakasi* 😊";
             $message .= "\r\n\r\n_Ini adalah pesan otomatis, tolong jangan balas pesan ini, jika ada pertanyaan langsung tanyakan ke admin yaa :))_";
             
-            sendWa($data['no_telp'], $message);
+			$getWhatsapp = $this->db->get_where('tbl_whatsapp', ['whatsapp_label' => $data['whatsapp_label']])->row();
+
+            sendWa($data['no_telp'], $message, $getWhatsapp->whatsapp_authorized);
+
+			$request = $this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => $data['no_resi'], 'ekspedisi' => strtolower($data['ekspedisi'])]);
+			
 			$this->session->set_flashdata('msg', swal("succ", "Data berhasil ditambahkan."));
 		}else{
 			$this->session->set_flashdata('msg', swal("err", "Data gagal ditambahkan."));
@@ -154,6 +188,8 @@ class Resi extends AUTH_Controller {
 							'tanggal_pencatatan'=> date('Y-m-d H:i:s'),
 							'sendWhatsapp'  => '0'
 						);
+
+						$request = $this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => $row[2], 'ekspedisi' => strtolower($row[5])]);
 					}
 
 					$no++;

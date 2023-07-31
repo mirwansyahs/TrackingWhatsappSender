@@ -1,4 +1,24 @@
 <?php
+    define('DEV', 'http://localhost/spt/backend-api/bff/');
+    define('PROD', 'https://api.solidproject.id/bff/');
+    
+	function getEnvirontment()
+    {
+        $ci =& get_instance();
+
+        return $ci->config->item('env');
+    }
+
+    function apiUrl($string = '')
+    {
+        if (getEnvirontment() == 'development'){
+		    $base = DEV.@$string;
+        }else{
+            $base = PROD.@$string;
+        }
+		
+		return $base;
+	}
 
 	function base_name(){
 		$name = "DEWASPRAY STORE";
@@ -12,7 +32,7 @@
 		return $noHP;
 	}
 
-	function sendWa($target = null, $message = null) 
+	function sendWa($target = null, $message = null, $token = null) 
     {
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -30,7 +50,7 @@
                 'countryCode' => '62',
             ),
             CURLOPT_HTTPHEADER => [
-                'Authorization: mRZ4CLne8f3XiU4#dm25'
+                'Authorization: '.$token
             ],
         ));
 
