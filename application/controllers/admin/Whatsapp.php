@@ -76,15 +76,19 @@ class Whatsapp extends AUTH_Controller {
 	{
 		$data = $this->input->post();
 
-		$result = $this->M_whatsapp->save($data);
-		if ($result){
-			$this->session->set_flashdata('msg', swal("succ", "Data berhasil ditambahkan."));
-			redirect('admin/whatsapp');
+		if (@$data['whatsapp_authorized'] != ""){
+			$result = $this->M_whatsapp->save($data);
+			if ($result){
+				$this->session->set_flashdata('msg', swal("succ", "Data berhasil ditambahkan."));
+				redirect('admin/whatsapp');
+			}else{
+				$this->session->set_flashdata('msg', swal("err", "Data gagal ditambahkan."));
+				redirect('admin/whatsapp');
+			}
 		}else{
 			$this->session->set_flashdata('msg', swal("err", "Data gagal ditambahkan."));
 			redirect('admin/whatsapp');
 		}
-
 	}
 
 	public function edit($id = '')
