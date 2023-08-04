@@ -248,7 +248,7 @@ $config['encryption_key'] = 'S29umy0n524Y20l7u1V8d3r9r0m079vH';
 */
 $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'ci_session';
-$config['sess_expiration'] = 72000;
+$config['sess_expiration'] = 7200;
 $config['sess_save_path'] = '/tmp';
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
@@ -361,4 +361,4 @@ $config['proxy_ips'] = '';
 /* End of file config.php */
 /* Location: ./application/config/config.php */
 
-$config['env']  = 'development';
+$config['env']  = 'production';
