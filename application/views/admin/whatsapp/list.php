@@ -40,11 +40,13 @@
                                         $getQR = json_decode($this->api->CallAPI('POST', fonnteUrl('/qr'), false, ['Authorization:'. $key->whatsapp_authorized]));
                                         if ($getQR->status){
                                             $url = $getQR->url;
+                                            $message = "";
                                         }else{
                                             $url = "";
+                                            $message = $getQR->reason;
                                         }
                                     ?>
-                                        <a href="data:image/png;base64,<?= $url?>" id="srcWhatsapp" data-toggle="lightbox" data-title="QR Code Whatsapp - <?=$key->whatsapp_label?>" data-gallery="gallery">
+                                        <a href="data:image/png;base64,<?= $url?>" id="srcWhatsapp" data-toggle="lightbox" data-title="QR Code - <?=$key->whatsapp_label?> <?=$message?>" data-gallery="gallery">
                                             <span class="btn btn-danger"><i class="fa fa-unlink"></i> Disconnected</span>
                                             <!-- <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample" /> -->
                                         </a>
