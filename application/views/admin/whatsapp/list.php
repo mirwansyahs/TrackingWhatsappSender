@@ -35,7 +35,9 @@
                                     <?php
                                     if (@$dataWA->device_status == "connect"){
                                     ?>
-                                    <span class="btn btn-success"><i class="fa fa-link"></i> Connected</span>
+                                        <a href="<?=base_url()?>admin/whatsapp/disconnect?whatsapp_authorized=<?=$key->whatsapp_authorized?>">
+                                            <span class="btn btn-success"><i class="fa fa-link"></i> Connected</span>
+                                        </a>
                                     <?php }else{ 
                                         $getQR = json_decode($this->api->CallAPI('POST', fonnteUrl('/qr'), false, ['Authorization:'. $key->whatsapp_authorized]));
                                         if ($getQR->status){
