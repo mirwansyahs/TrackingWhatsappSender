@@ -89,13 +89,13 @@ class Resi extends AUTH_Controller {
             sendWa($data['no_telp'], $message, $getWhatsapp->whatsapp_authorized);
 
 			$request = $this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => $data['no_resi'], 'ekspedisi' => strtolower($data['ekspedisi'])]);
-			var_dump($request);
-			// $this->session->set_flashdata('msg', swal("succ", "Data berhasil ditambahkan.".$request));
+			
+			$this->session->set_flashdata('msg', swal("succ", "Data berhasil ditambahkan."));
 		}else{
 			$this->session->set_flashdata('msg', swal("err", "Data gagal ditambahkan."));
 		}
 
-		// redirect('admin/resi');
+		redirect('admin/resi');
 	}
 
 	public function edit($id = '')
