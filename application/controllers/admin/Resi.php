@@ -90,7 +90,7 @@ class Resi extends AUTH_Controller {
 
 			$request = $this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => $data['no_resi'], 'ekspedisi' => strtolower($data['ekspedisi'])]);
 			
-			$this->session->set_flashdata('msg', swal("succ", "Data berhasil ditambahkan."));
+			$this->session->set_flashdata('msg', swal("succ", "Data berhasil ditambahkan.".$request));
 		}else{
 			$this->session->set_flashdata('msg', swal("err", "Data gagal ditambahkan."));
 		}
