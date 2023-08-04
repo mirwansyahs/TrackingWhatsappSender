@@ -46,11 +46,10 @@ class Whatsapp extends AUTH_Controller {
 	public function disconnect()
 	{
 		$data = $this->input->get();
-
 		$result = NULL;
-		$getData = $this->M_whatsapp->select(['whatsapp_authorized' => $data['whatsapp_authorized']])->row();
+		$getData = $this->M_whatsapp->select(['whatsapp_authorized' => base64_decode($data['whatsapp_authorized'])])->row();
 		if (@$getData->whatsapp_vendor == "fonnte"){
-			$result = json_decode($this->api->CallAPI('POST', fonnteUrl('/disconnect'), false, ['Authorization:'. $data['whatsapp_authorized']]));
+			$result = json_decode($this->api->CallAPI('POST', fonnteUrl('/disconnect'), false, ['Authorization:'. base64_decode($data['whatsapp_authorized'])]));
 			if ($result){
 				$this->session->set_flashdata('msg', swal("succ", "Whatsapp berhasil disconnect."));
 			}else{

@@ -35,7 +35,7 @@
                                     <?php
                                     if (@$dataWA->device_status == "connect"){
                                     ?>
-                                        <a href="<?=base_url()?>admin/whatsapp/disconnect?whatsapp_authorized=<?=$key->whatsapp_authorized?>">
+                                        <a href="<?=base_url()?>admin/whatsapp/disconnect?whatsapp_authorized=<?=base64_encode($key->whatsapp_authorized)?>">
                                             <span class="btn btn-success"><i class="fa fa-link"></i> Connected</span>
                                         </a>
                                     <?php }else{ 
