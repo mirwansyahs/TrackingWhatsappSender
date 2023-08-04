@@ -20,6 +20,13 @@
 		return $base;
 	}
 
+    function fonnteUrl($string = '')
+    {
+		$base = "https://api.fonnte.com".@$string;
+
+		return $base;
+	}
+
 	function base_name(){
 		$name = "DEWASPRAY STORE";
 		return $name;

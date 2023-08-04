@@ -20,7 +20,7 @@ class API {
                         'Content-Type: application/json',
                         'Content-Length: ' . strlen(json_encode($data)),
                         $header
-                    ));
+                    )); 
 
                 }
                 else {

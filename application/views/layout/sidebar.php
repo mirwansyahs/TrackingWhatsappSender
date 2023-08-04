@@ -40,6 +40,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="<?=base_url()?>admin/whatsapp" class="nav-link <?=(@$active == "whatsapp")?'active':''?>">
+              <i class="nav-icon fas fa-comments"></i>
+              <p>
+                Daftar Whatsapp
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="<?=base_url()?>admin/members" class="nav-link <?=(@$active == "users")?'active':''?>">
               <i class="nav-icon fas fa-users"></i>
               <p>
