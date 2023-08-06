@@ -186,7 +186,8 @@ class Resi extends AUTH_Controller {
 							'ekspedisi'     => $row[5],
 							'harga'         => $row[6],
 							'tanggal_pencatatan'=> date('Y-m-d H:i:s'),
-							'sendWhatsapp'  => '0'
+							'sendWhatsapp'  => '0',
+							'whatsapp_label'=> $this->randomWhatsapp()
 						);
 
 						$request = $this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => $row[2], 'ekspedisi' => strtolower($row[5])]);
