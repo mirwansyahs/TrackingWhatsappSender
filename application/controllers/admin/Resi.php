@@ -176,7 +176,7 @@ class Resi extends AUTH_Controller {
 					$cekResi = $this->M_resi->select(['no_resi' => $row[2]]);
 
 					if ($cekResi->num_rows() == 0){
-						$getProduct = $this->M_resi->select(['nama_barang' => $row[3], 'nama_variasi' => $row[4]])->row();
+						$getProduct = $this->M_produk->select(['nama_barang' => $row[3], 'nama_variasi' => $row[4]])->row();
 
 						$rows[$no] = array(
 							'nama_customer' => $row[0],
