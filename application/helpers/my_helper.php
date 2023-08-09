@@ -12,9 +12,9 @@
     function apiUrl($string = '')
     {
         if (getEnvirontment() == 'development'){
-		    $base = DEV.@$string;
+		    $base = DEV.@$string."?apikey=".sha1("unclemuthu");
         }else{
-            $base = PROD.@$string;
+            $base = PROD.@$string."?apikey=".sha1("unclemuthu");
         }
 		
 		return $base;

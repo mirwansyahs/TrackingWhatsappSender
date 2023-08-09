@@ -30,11 +30,8 @@ class Home extends CI_Controller {
     public function webhook()
     {
         $key = json_decode(file_get_contents('php://input'));
-        // $data = $this->input->post();
-        // var_dump($data);
-
-        // foreach ($data as $key) {
-        //     var_dump($key);
+        $cekResi = $this->M_resi->select(['tbl_resi.no_resi' => $key->no_resi]);
+        if ($cekResi->num_rows() > 0){
             $cekDB = $this->M_resi_activity->select(['tbl_resi.no_resi' => $key->no_resi, 'date' => $key->scantime]);
 
             if ($cekDB->num_rows() == 0){
@@ -56,9 +53,10 @@ class Home extends CI_Controller {
                 $send = sendWa($getResi->no_telp, $message, $getDataWhatsapp->whatsapp_authorized);
 
             }
-        // }
-
-        echo "true";
+            echo "true";
+        }else{
+            echo "false";
+        }
 
     }
 
