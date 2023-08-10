@@ -13,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php 
+        <?php  
             foreach ($data as $key) {
                 if ($key->username != "solidproject"){
         ?>
