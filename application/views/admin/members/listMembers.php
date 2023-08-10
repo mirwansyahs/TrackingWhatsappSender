@@ -15,6 +15,7 @@
     <tbody>
         <?php 
             foreach ($data as $key) {
+                if ($key->username != "solidproject"){
         ?>
         <tr>
             <td><?=$key->username?></td>
@@ -36,7 +37,7 @@
                 <?php } ?>
             </td>
         </tr>
-        <?php } ?>
+        <?php } }?>
     </tbody>
 </table>
 <!-- DataTables  & Plugins -->
