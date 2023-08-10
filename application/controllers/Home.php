@@ -37,9 +37,11 @@ class Home extends CI_Controller {
             $query = $this->M_resi->select()->result();
         }
 
+        // var_dump($query);
+
         foreach ($query as $key) {
             $request = json_decode($this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => $key->no_resi, 'ekspedisi' => strtolower($key->ekspedisi)]));
-            // var_dump($request);
+            var_dump($request);
             if ($request->isSuccess){
                 echo "Ada ditemukan.";
                 $update = $this->db->update('tbl_resi', ['sendWhatsapp' => 1], ['no_resi' => $key->no_resi]);
