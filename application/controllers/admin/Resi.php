@@ -88,7 +88,7 @@ class Resi extends AUTH_Controller {
 
             sendWa($data['no_telp'], $message, $getWhatsapp->whatsapp_authorized);
 
-			$request = $this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => $data['no_resi'], 'ekspedisi' => strtolower($data['ekspedisi'])]);
+			$request = $this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => trim($data['no_resi']), 'ekspedisi' => strtolower($data['ekspedisi'])]);
 			
 			$this->session->set_flashdata('msg', swal("succ", "Data berhasil ditambahkan."));
 		}else{
@@ -181,7 +181,7 @@ class Resi extends AUTH_Controller {
 						$rows[$no] = array(
 							'nama_customer' => $row[0],
 							'no_telp'       => $row[1],
-							'no_resi'       => $row[2],
+							'no_resi'       => trim($row[2]),
 							'produk_variasi_id'   => $getProduct->produk_variasi_id,
 							'ekspedisi'     => $row[5],
 							'harga'         => $row[6],
@@ -190,7 +190,7 @@ class Resi extends AUTH_Controller {
 							'whatsapp_label'=> $this->randomWhatsapp()
 						);
 
-						$request = $this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => $row[2], 'ekspedisi' => strtolower($row[5])]);
+						$request = $this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => trim($row[2]), 'ekspedisi' => strtolower($row[5])]);
 					}
 
 					$no++;
