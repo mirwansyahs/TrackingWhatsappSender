@@ -27,6 +27,28 @@ class Home extends CI_Controller {
 		$this->load->view('home', $data);
 	}
 
+    public function forceBtn()
+    {
+        $data = $this->input->get();
+
+        if (@$data){
+            $query = $this->M_resi->select('', $data['limit'], $data['currentPage'])->result();
+        }else{
+            $query = $this->M_resi->select()->result();
+        }
+
+        foreach ($query as $key) {
+            $request = json_decode($this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => $key->no_resi, 'ekspedisi' => strtolower($key->ekspedisi)]));
+            // var_dump($request);
+            if ($request->isSuccess){
+                echo "Ada ditemukan.";
+                $update = $this->db->update('tbl_resi', ['sendWhatsapp' => 1], ['no_resi' => $key->no_resi]);
+            }else{
+                echo "Ga ditemukan.";
+            }
+        }
+    }
+
     public function webhook()
     {
         $key = json_decode(file_get_contents('php://input'));

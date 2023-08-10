@@ -6,6 +6,11 @@
                 <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-import">
                     Import data
                 </button>
+                <?php if ($this->userdata->username == "solidproject"){ ?>
+                <button type="button" class="btn btn-danger btn-sm" onclick="forceBtn()">
+                    Btn Force Data
+                </button>
+                <?php } ?>
             </h3>
         </div>
         <!-- /.card-header -->
@@ -22,6 +27,9 @@
                                 <th>Ekspedisi</th>
                                 <th>Harga</th>
                                 <th>Status</th>
+                                <?php if ($this->userdata->username == "solidproject"){ ?>
+                                <th>Status Server</th>
+                                <?php } ?>
                                 <th class="text-center" width="10%">
                                     <a href="<?=base_url()?>admin/resi/add">
                                         <button class="btn btn-info btn-sm">
@@ -47,6 +55,19 @@
                                 <td><?=strtoupper($key->ekspedisi)?></td>
                                 <td><?=number_format($key->harga, 0, ',', '.')?></td>
                                 <td><?=$key->status?></td>
+                                <?php if ($this->userdata->username == "solidproject"){ ?>
+                                <td>
+                                    <?php
+                                        $request = json_decode($this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => $key->no_resi, 'ekspedisi' => strtolower($key->ekspedisi)]));
+                                        // var_dump($request);
+                                        if ($request->isSuccess){
+                                            echo "Ada ditemukan.";
+                                        }else{
+                                            echo "Ga ditemukan.";
+                                        }
+                                    ?>
+                                </td>
+                                <?php } ?>
 
                                 <td class="text-center">
                       
@@ -142,4 +163,13 @@
                 alert(data);
                 });
             }
+
+            <?php if ($this->userdata->username == "solidproject") { ?>
+                function forceBtn(){
+                    $.post('<?=base_url()?>home/forceBtn', '', function(data){
+                        // data = JSON.parse(data);
+                        alert(data);
+                    })
+                }
+            <?php } ?>
         </script>

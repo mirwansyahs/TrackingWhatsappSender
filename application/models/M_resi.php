@@ -3,9 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_resi extends CI_Model {
 
-	public function select($where = ''){
+	public function select($where = '', $limit = '', $currentPage = ''){
 		if ($where != ''){
 			$this->db->where($where);
+		}
+
+		if ($limit != '' && $currentPage != ''){
+			$this->db->limit($limit, $currentPage);
 		}
 
 					$this->db->from('tbl_resi');
