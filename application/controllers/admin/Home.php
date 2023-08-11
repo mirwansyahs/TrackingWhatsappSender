@@ -5,6 +5,9 @@ class Home extends AUTH_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('M_resi');
+		$this->load->model('M_produk');
+		$this->load->model('M_admin');
 	}
 	
 	public function index()
