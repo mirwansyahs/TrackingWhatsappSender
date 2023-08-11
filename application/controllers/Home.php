@@ -71,6 +71,11 @@ class Home extends CI_Controller {
                 );
                 $this->M_resi_activity->save($arr);
 
+                // Update statuscode if exist
+                if ($key->scanstatus != ""){
+                    $updateDataResi = $this->db->update('tbl_resi', ['status' => $key->scanstatus], ['no_resi' => $key->no_resi]);
+                }
+
                 $getDataWhatsapp = $this->db->get_where('tbl_whatsapp', ['whatsapp_label' => $getResi->whatsapp_label])->row();
                 
                 $message = "Halo kak ".$getResi->nama_customer.", berikut informasi dari resi kaka :\r\n\r\nTanggal : ". $key->scantime . "\r\nStatus : Aktif\r\nKeterangan : " . $key->description . " " . $key->city. " " . $key->reason . "\r\nNo Resi : " . $getResi->no_resi."\r\n\r\n_Ini adalah pesan otomatis, tolong jangan balas pesan ini, jika ada pertanyaan langsung tanyakan ke admin yaa :))_";
