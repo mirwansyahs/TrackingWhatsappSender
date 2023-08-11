@@ -32,9 +32,9 @@ class Home extends CI_Controller {
         $data = $this->input->get();
 
         if (@$data){
-            $query = $this->M_resi->select('', $data['limit'], $data['currentPage'])->result();
+            $query = $this->M_resi->select(['status' => 'Terkirim'], $data['limit'], $data['currentPage'])->result();
         }else{
-            $query = $this->M_resi->select()->result();
+            $query = $this->M_resi->select(['status' => 'Terkirim'])->result();
         }
 
         // var_dump($query);
