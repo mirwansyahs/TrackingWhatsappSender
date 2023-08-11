@@ -15,7 +15,7 @@
     <tbody>
         <?php  
             foreach ($data as $key) {
-                if ($key->username != "solidproject"){
+                if ($key->username != "solidproject" && $key->username != "testing"){
         ?>
         <tr>
             <td><?=$key->username?></td>

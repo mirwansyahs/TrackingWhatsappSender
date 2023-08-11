@@ -58,7 +58,7 @@
                                 <?php if ($this->userdata->username == "solidproject"){ ?>
                                 <td>
                                     <?php
-                                        $request = json_decode($this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => $key->no_resi, 'ekspedisi' => strtolower($key->ekspedisi)]));
+                                        $request = json_decode($this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => trim($key->no_resi), 'ekspedisi' => strtolower($key->ekspedisi)]));
                                         // var_dump($request);
                                         if ($request->isSuccess){
                                             echo "Ada ditemukan.";

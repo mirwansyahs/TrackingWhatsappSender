@@ -54,12 +54,13 @@ class Home extends CI_Controller {
     public function webhook()
     {
         $key = json_decode(file_get_contents('php://input'));
-        $cekResi = $this->M_resi->select(['tbl_resi.no_resi' => $key->no_resi]);
+        
+        $cekResi = $this->M_resi->select(['trim(tbl_resi.no_resi)' => $key->no_resi]);
         if ($cekResi->num_rows() > 0){
-            $cekDB = $this->M_resi_activity->select(['tbl_resi.no_resi' => $key->no_resi, 'date' => $key->scantime]);
+            $cekDB = $this->M_resi_activity->select(['trim(tbl_resi.no_resi)' => $key->no_resi, 'date' => $key->scantime]);
 
             if ($cekDB->num_rows() == 0){
-                $getResi = $this->M_resi->select(['tbl_resi.no_resi' => $key->no_resi])->row();
+                $getResi = $this->M_resi->select(['trim(tbl_resi.no_resi)' => $key->no_resi])->row();
 
                 $arr = array(
                     'no_resi'       => $key->no_resi,

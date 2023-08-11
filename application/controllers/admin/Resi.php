@@ -176,11 +176,11 @@ class Resi extends AUTH_Controller {
 					$cekResi = $this->M_resi->select(['no_resi' => $row[2]]);
 
 					if ($cekResi->num_rows() == 0){
-						$getProduct = $this->M_produk->select(['nama_barang' => $row[3], 'nama_variasi' => $row[4]])->row();
+						$getProduct = $this->M_produk->select(['nama_barang' => trim($row[3]), 'nama_variasi' => trim($row[4])])->row();
 
 						$rows[$no] = array(
 							'nama_customer' => $row[0],
-							'no_telp'       => $row[1],
+							'no_telp'       => trim($row[1]),
 							'no_resi'       => trim($row[2]),
 							'produk_variasi_id'   => $getProduct->produk_variasi_id,
 							'ekspedisi'     => $row[5],
@@ -190,7 +190,7 @@ class Resi extends AUTH_Controller {
 							'whatsapp_label'=> $this->randomWhatsapp()
 						);
 
-						$request = $this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => trim($row[2]), 'ekspedisi' => strtolower($row[5])]);
+						$request = $this->api->CallAPI('POST', apiUrl('/api/v1/Tracking'), ['no_resi' => trim($row[2]), 'ekspedisi' => strtolower(trim($row[5]))]);
 					}
 
 					$no++;
