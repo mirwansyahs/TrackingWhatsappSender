@@ -27,6 +27,13 @@
 		return $base;
 	}
 
+    function localUrl($string = '')
+    {
+		$base = "https://wa.omahawan.com".@$string;
+
+		return $base;
+	}
+
 	function base_name(){
 		$name = "DEWASPRAY STORE";
 		return $name;

@@ -24,7 +24,11 @@
                         <tbody>
                             <?php 
                                 foreach ($data as $key) {
-                                    $dataWA = json_decode($this->api->CallAPI('POST', fonnteUrl('/device'), false, ['Authorization:'. $key->whatsapp_authorized]));
+                                    if ($key->whatsapp_vendor == "fonnte"){
+                                        $dataWA = json_decode($this->api->CallAPI('POST', fonnteUrl('/device'), false, ['Authorization:'. $key->whatsapp_authorized]));
+                                    }else{
+                                        $dataWA = json_decode($this->api->CallAPI('GET', fonnteUrl('/getStatus')));
+                                    }
                             ?>
                             <tr>
                                 <td><small class="badge badge-success"><?=$key->whatsapp_vendor?></small><br/>
@@ -33,25 +37,39 @@
                                 <td><?=$key->whatsapp_label?></td>
                                 <td>
                                     <?php
-                                    if (@$dataWA->device_status == "connect"){
+                                    if (@$dataWA->device_status == "connect" && $key->whatsapp_vendor == "fonnte"){
                                     ?>
                                         <a href="<?=base_url()?>admin/whatsapp/disconnect?whatsapp_authorized=<?=base64_encode($key->whatsapp_authorized)?>">
                                             <span class="btn btn-success"><i class="fa fa-link"></i> Connected</span>
                                         </a>
                                     <?php }else{ 
-                                        $getQR = json_decode($this->api->CallAPI('POST', fonnteUrl('/qr'), false, ['Authorization:'. $key->whatsapp_authorized]));
-                                        if ($getQR->status){
-                                            $url = $getQR->url;
-                                            $message = "";
-                                        }else{
-                                            $url = "";
-                                            $message = $getQR->reason;
-                                        }
+                                    
+                                        if ($key->whatsapp_vendor == "fonnte"){
+                                            $getQR = json_decode($this->api->CallAPI('POST', fonnteUrl('/qr'), false, ['Authorization:'. $key->whatsapp_authorized]));
+                                            if ($getQR->status){
+                                                $url = $getQR->url;
+                                                $message = "";
+                                            }else{
+                                                $url = "";
+                                                $message = $getQR->reason;
+                                            }
                                     ?>
                                         <a href="data:image/png;base64,<?= $url?>" id="srcWhatsapp" data-toggle="lightbox" data-title="QR Code - <?=$key->whatsapp_label?> <?=$message?>" data-gallery="gallery">
                                             <span class="btn btn-danger"><i class="fa fa-unlink"></i> Disconnected</span>
                                             <!-- <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample" /> -->
                                         </a>
+                                    <?php
+                                        }else{
+                                            $getQR = json_decode($this->api->CallAPI('GET', localUrl('/getqr')));
+                                            $url = $getQR->qr;
+                                            $message = "";
+                                    ?>
+                                        <a href="data:image/svg+xml;base64,<?= base64_encode($url)?>" id="srcWhatsapp" data-toggle="lightbox" data-title="QR Code - <?=$key->whatsapp_label?> <?=$message?>" data-gallery="gallery">
+                                            <span class="btn btn-danger"><i class="fa fa-unlink"></i> Disconnected</span>
+                                        </a>
+                                    <?php
+                                        }
+                                    ?>
                                     
                                     <?php } ?>
                                 </td>

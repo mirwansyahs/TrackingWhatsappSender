@@ -20,29 +20,45 @@
 
                     <div class="form-group col-md-12">
                         <label for="whatsapp_vendor">Vendor</label>
-                        <?php $arr = array('fonnte'); ?>
-                        <select name="whatsapp_vendor" class="form-control" id="whatsapp_vendor">
+                        <?php $arr = array('fonnte', 'local'); ?>
+                        <select name="whatsapp_vendor" class="form-control" id="whatsapp_vendor" onchange="onchangeselect()">
                             <?php for($i = 0; $i < count($arr); $i++) { ?>
                                 <option value="<?=$arr[$i]?>"><?=$arr[$i]?></option>
                             <?php } ?>
                         </select>
                     </div>
-                    <div class="form-group col-md-12">
-                        <label for="whatsapp_authorized">Authorized</label>
-                        <div class="row">
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" id="whatsapp_authorized" name="whatsapp_authorized" placeholder="mRZ4CLne8XXXX">
-                            </div>
-                            <div class="col-md-3">
-                                <button type="button" class="form-control btn btn-success" id="whatsapp_authorized" name="whatsapp_authorized" onclick="checkAPI()">
-                                        Check
-                                </button>
+                    <div id="formfonnte" class="col-md-12">
+                        <div class="form-group col-md-12">
+                            <label for="whatsapp_authorized">Authorized</label>
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="whatsapp_authorized" name="whatsapp_authorized" placeholder="mRZ4CLne8XXXX">
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="form-control btn btn-success" id="whatsapp_authorized" name="whatsapp_authorized" onclick="checkAPI()">
+                                            Check
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                        <div class="form-group col-md-12">
+                            <label for="whatsapp_label">Label</label>
+                            <input type="text" class="form-control" id="whatsapp_label" name="whatsapp_label" readonly>
+                        </div>
                     </div>
-                    <div class="form-group col-md-12">
-                        <label for="whatsapp_label">Label</label>
-                        <input type="text" class="form-control" id="whatsapp_label" name="whatsapp_label" readonly>
+                    <div id="formlocal" class="col-md-12" style="display: none;">
+                        <div class="form-group col-md-12">
+                            <label for="whatsapp_authorized">Authorized</label>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" id="whatsapp_authorized" name="whatsapp_authorized" placeholder="mRZ4CLne8XXXX" value="<?=rand()?>" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="whatsapp_label">Label</label>
+                            <input type="text" class="form-control" id="whatsapp_label" name="whatsapp_label">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -57,6 +73,17 @@
 </div><!-- /.container-fluid -->
 
 <script>
+
+function onchangeselect()
+{
+    if ($('#whatsapp_vendor').val() == "fonnte"){
+        $('#formfonnte').css("display", "");
+        $('#formlocal').css("display", "none");
+    }else{
+        $('#formfonnte').css("display", "none");
+        $('#formlocal').css("display", "");
+    }
+}
 
 function checkAPI()
 {
