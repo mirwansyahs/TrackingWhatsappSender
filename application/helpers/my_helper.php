@@ -29,7 +29,7 @@
 
     function localUrl($string = '')
     {
-		$base = "https://wa.omahawan.com".@$string;
+		$base = "http://wa.omahawan.com:50000".@$string;
 
 		return $base;
 	}
@@ -48,30 +48,79 @@
 
 	function sendWa($target = null, $message = null, $token = null) 
     {
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.fonnte.com/send',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => array(
+
+		$_ci = &get_instance();
+
+		if (substr($target, 0, 1) == "0"){
+			$target = "62".substr($target, 1);
+		}
+
+		$getData = $_ci->db->get_where('tbl_whatsapp', ['whatsapp_authorized' => $token])->row();
+		if ($getData->whatsapp_vendor == "fonnte"){
+			$customRequest = "POST";
+			$url = "https://api.fonnte.com/send";
+			$postFields = array(
                 'target' => $target,
                 'message' => $message,
                 'countryCode' => '62',
-            ),
-            CURLOPT_HTTPHEADER => [
-                'Authorization: '.$token
-            ],
-        ));
+            );
+			
+			$curl = curl_init();
 
-        $response = curl_exec($curl);
+			curl_setopt_array($curl, array(
+				CURLOPT_URL => $url,
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => '',
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 0,
+				CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => $customRequest,
+				CURLOPT_POSTFIELDS => $postFields,
+				CURLOPT_HTTPHEADER => [
+					'Authorization: '.$token
+				],
+			));
 
-        curl_close($curl);
-        return $response;
+			$response = curl_exec($curl);
+
+			curl_close($curl);
+			return $response;
+
+		}else{
+			$customRequest = "POST";
+			$url = "http://wa.omahawan.com:50000/sendMessage";
+			$postFields = array(
+                'no_hp' => $target,
+                'pesan' => $message,
+            );
+
+			$curl = curl_init();
+			curl_setopt_array($curl, array(
+				CURLOPT_URL => $url,
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => '',
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 0,
+				CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => $customRequest,
+				CURLOPT_POSTFIELDS => json_encode($postFields),
+                CURLOPT_HTTPHEADER => array(
+                        'Content-Type: application/json',
+                        'Content-Length: ' . strlen(json_encode($postFields)),
+                    )
+			));
+
+			$response = curl_exec($curl);
+
+			var_dump($postFields);
+
+			curl_close($curl);
+			return $response;
+
+		}
+        
     }
 
 	function expedisi($ex = null){
